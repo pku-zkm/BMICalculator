@@ -38,39 +38,50 @@ public class BMICalculator extends JFrame {
         panels[1].add(cbUnit[0]);
         panels[2].add(cbUnit[1]);
 
-        setLayout(new GridLayout(5, 1));
+        setLayout(new GridLayout(4, 1));
         for (JPanel panel : panels) {
             getContentPane().add(panel);
         }
 
         JPanel pnlCalc = new JPanel(new BorderLayout());
-        pnlCalc.setBorder(new EmptyBorder(5,5,5,5));
+        pnlCalc.setBorder(new EmptyBorder(5, 5, 5, 5));
         btnCalc = new JButton("计算");
         btnCalc.addActionListener(e -> calc());
         pnlCalc.add(btnCalc, BorderLayout.EAST);
         getContentPane().add(pnlCalc);
 
         lblResult = new JLabel();
-        lblResult.setFont(new Font("宋体",Font.PLAIN,16));
+        lblResult.setFont(new Font("宋体", Font.PLAIN, 16));
         pnlCalc.add(lblResult, BorderLayout.CENTER);
 
 
-        setSize(300, 200);
+        setSize(270, 170);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    private void calc(){
+    private void calc() {
         double height = Double.parseDouble(tfHeight.getText());
         double weight = Double.parseDouble(tfWeight.getText());
-        if (cbUnit[0].getSelectedIndex()==1){
+        if (cbUnit[0].getSelectedIndex() == 1) {
             height /= 100;
         }
-        if (cbUnit[1].getSelectedIndex()==1){
-            weight/=2;
+        if (cbUnit[1].getSelectedIndex() == 1) {
+            weight /= 2;
         }
-
+        double bmi = weight / (height * height);
+        String comment;
+        if (bmi < 18.5) {
+            comment = "过轻";
+        } else if (bmi < 24) {
+            comment = "正常";
+        } else if (bmi < 28) {
+            comment = "偏胖";
+        } else {
+            comment = "肥胖";
+        }
+        SwingUtilities.invokeLater(() ->
+                lblResult.setText(String.format("您的BMI是%.1f，%s。", bmi, comment)));
     }
-
 
 
     public static void main(String[] args) {
@@ -84,6 +95,5 @@ public class BMICalculator extends JFrame {
     private JRadioButton[] rbGender;
     private ButtonGroup bgGender;
     private JComboBox[] cbUnit;
-
 
 }
